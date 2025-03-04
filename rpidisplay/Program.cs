@@ -76,12 +76,18 @@ internal class Program
     private static void DisplayImage(GraphicDisplay ssd1306, bool waitForTimeout = true)
     {
         Console.WriteLine("Display Image");
-        var image_name = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", "logo.bmp");
-        using BitmapImage image = BitmapImage.CreateFromFile(image_name);
-        ssd1306.DrawBitmap(image);
         if (waitForTimeout)
         {
+            var image_name = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", "logo.bmp");
+            using BitmapImage image = BitmapImage.CreateFromFile(image_name);
+            ssd1306.DrawBitmap(image);
             Thread.Sleep(DisplayLogoTimeout);
+        }
+        else
+        {
+            var image_name = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", "logosd.bmp");
+            using BitmapImage image = BitmapImage.CreateFromFile(image_name);
+            ssd1306.DrawBitmap(image);
         }
     }
 
