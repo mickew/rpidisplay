@@ -1,5 +1,6 @@
 ﻿using System.Device.I2c;
 using System.Drawing;
+using System.Reflection;
 using Iot.Device.Graphics;
 using Iot.Device.Graphics.SkiaSharpAdapter;
 using Iot.Device.Ssd13xx;
@@ -8,14 +9,21 @@ namespace rpidisplay;
 
 internal class Program
 {
+    private const string VersionArgs = "--version";
     private const string Font = "DejaVu Sans";
     private const int FontSize = 8;
     private const int DisplayInfoTimeout = 1000;
     private const int DisplayLogoTimeout = 15000;
     private static bool keepRunning = true;
 
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
+        var printVersion = args.Any(x => x == VersionArgs);
+        if (printVersion)
+        {
+            Console.WriteLine(GetVersion());
+            return 0;
+        }
         Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
         {
             e.Cancel = true;
@@ -44,6 +52,7 @@ internal class Program
         DisplayImage(device, false);
         device.Dispose();
         Console.WriteLine("Shuting down...");
+        return 0;
     }
 
     private static void DisplayInfo(GraphicDisplay ssd1306, string font, int fontSize, string ipAddress, string cpuLoad, string memoryUsage, string diskUsage)
@@ -74,5 +83,16 @@ internal class Program
         {
             Thread.Sleep(DisplayLogoTimeout);
         }
+    }
+
+    private static string GetVersion()
+    {
+        Assembly currentAssembly = typeof(Program).Assembly;
+        if (currentAssembly == null)
+        {
+            currentAssembly = Assembly.GetCallingAssembly();
+        }
+        var version = $"{currentAssembly.GetName().Version!.Major}.{currentAssembly.GetName().Version!.Minor}.{currentAssembly.GetName().Version!.Build}";
+        return version ?? "?.?.?";
     }
 }
