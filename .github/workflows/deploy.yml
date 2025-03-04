@@ -31,10 +31,13 @@ jobs:
       with:
         name: application-artifacts
         path: dotnet-app/
+
   release-project:
     name: Release Project
     runs-on: ubuntu-latest
     needs: build-project
+    permissions:
+      contents: write
     steps:
     - name: Download content
       uses: actions/download-artifact@v4
