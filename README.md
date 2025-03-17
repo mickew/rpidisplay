@@ -11,5 +11,5 @@
 ### Install, update and uninstall Raspberry PI Info Display
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/mickew/rpidisplay/main/Tools/gettools.sh)
+curl -s https://raw.githubusercontent.com/mickew/rpidisplay/main/Tools/setup | sudo bash
 ```
