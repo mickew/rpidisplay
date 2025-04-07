@@ -15,12 +15,6 @@ rooturl="https://github.com/mickew/rpidisplay/releases/download"
 filename="release.zip"
 out="latest"
 
-function log {
-    if [ $VERBOSE -eq 1 ]; then
-        echo $1
-    fi
-}
-
 #Check parameters
 if [ $# -gt 0 ]; then
     if [[ $1 == -v ]]; then
@@ -35,7 +29,7 @@ fi
 #Check if script is being run as root
 if [ "$(id -u)" != "0" ]; then
    whiptail --title "$application_name" --msgbox "This script must be run as root." 8 78
-   log "This script must be run as root"
+   echo "This script must be run as root" 1>&2
    exit 1
 fi
 
@@ -44,6 +38,12 @@ if [ ! $? = 0 ]; then
 fi
 
 # help functions
+function log {
+    if [ $VERBOSE -eq 1 ]; then
+        echo $1
+    fi
+}
+
 function install {
     echo "Installing..."
     if checkifinstalled; then
