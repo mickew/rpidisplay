@@ -15,6 +15,12 @@ rooturl="https://github.com/mickew/rpidisplay/releases/download"
 filename="release.zip"
 out="latest"
 
+function log {
+    if [ $VERBOSE -eq 1 ]; then
+        echo $1
+    fi
+}
+
 #Check parameters
 if [ $# -gt 0 ]; then
     if [[ $1 == -v ]]; then
@@ -129,12 +135,6 @@ function checkifinstalled {
         return 0
     else
         return 1
-    fi
-}
-
-function log {
-    if [ $VERBOSE -eq 1 ]; then
-        echo $1
     fi
 }
 
